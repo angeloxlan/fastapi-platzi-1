@@ -5,6 +5,7 @@ from enum import Enum
 # Pydantic
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import EmailStr, HttpUrl
 
 # FastAPI
 from fastapi import FastAPI
@@ -39,11 +40,25 @@ class Person(BaseModel):
         )
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
+    email: EmailStr = Field(...)
+    website: HttpUrl = Field(...)
 
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(
+        ...,
+        min_length=1,
+        max_length=50,
+        )
+    state: str = Field(
+        ...,
+        min_length=1,
+        max_length=50,
+        )
+    country: str = Field(
+        ...,
+        min_length=1, 
+        max_length=50,
+        )
 
 
 @app.get('/')
